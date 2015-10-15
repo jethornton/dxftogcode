@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"os"
+	"os/user"
 	"fmt"
 	"strconv"
 	"math"
@@ -17,8 +18,9 @@ func check(e error) {
 	}
 }
 
-func iniRead(m map[string]string) {
-	f, err := os.Open("dxf2gcode.ini")
+func iniRead(m map[string]string, home string) {
+	home += "/dxf2gcode.ini"
+	f, err := os.Open(home)
 	check(err)
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
@@ -214,6 +216,8 @@ start point.
 }
 
 func main(){
+	usr, err := user.Current()
+	check(err)
 	iniMap := make(map[string]string)
 	var inFile string
 	if len(os.Args) == 2 {
@@ -225,17 +229,15 @@ func main(){
 			inFile = os.Args[1]
 		}
 	} else {
-		//inFile = "test.dxf"
 		pwd, err := os.Getwd()
 		check(err)
 		fmt.Println("Current Working Directory is:", pwd)
+		fmt.Println("Current User Directory is:", usr.HomeDir)
 		fmt.Println("Usage is: dxf2g filename.ext")
 		fmt.Println("Usage is: dxf2g -v")
 		os.Exit(0)
 	}
-	iniRead(iniMap)
-	fmt.Println(iniMap)
-	fmt.Println(iniMap["SAVEAS"])
+	iniRead(iniMap, usr.HomeDir)
 	var entities []Ent
 	lines := getLines(inFile)
 	entities = getEnt(lines, entities)
