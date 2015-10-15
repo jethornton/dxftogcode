@@ -226,6 +226,9 @@ func main(){
 		}
 	} else {
 		//inFile = "test.dxf"
+		pwd, err := os.Getwd()
+		check(err)
+		fmt.Println("Current Working Directory is:", pwd)
 		fmt.Println("Usage is: dxf2g filename.ext")
 		fmt.Println("Usage is: dxf2g -v")
 		os.Exit(0)
