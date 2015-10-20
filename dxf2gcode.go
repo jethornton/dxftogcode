@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"math"
 	"sort"
-	"strings"
+	"github.com/jethornton/dxfutil"
 )
 
 func check(e error) {
@@ -17,7 +17,7 @@ func check(e error) {
 		os.Exit(0)
 	}
 }
-
+/*
 func iniRead(m map[string]string, home string) {
 	home += "/dxf2gcode.ini"
 	f, err := os.Open(home)
@@ -32,6 +32,7 @@ func iniRead(m map[string]string, home string) {
 		}
 	}
 }
+*/
 
 func getXcartesian(radius, angle float64) (coordinate float64){
 	return radius * math.Cos(angle * (math.Pi / 180))
@@ -235,9 +236,10 @@ func main(){
 		fmt.Println("Current User Directory is:", usr.HomeDir)
 		fmt.Println("Usage is: dxf2g filename.ext")
 		fmt.Println("Usage is: dxf2g -v")
+		fmt.Println(dxfutil.Import("c"))
 		os.Exit(0)
 	}
-	iniRead(iniMap, usr.HomeDir)
+	dxfutil.Readini(iniMap, usr.HomeDir)
 	var entities []Ent
 	lines := getLines(inFile)
 	entities = getEnt(lines, entities)
