@@ -31,7 +31,11 @@ func main(){
 	lines := dxfutil.GetLines(inFile)
 	entities := dxfutil.GetEntities(lines)
 	entities = dxfutil.GetEndPoints(entities)
-	start := 1
+	start := 0
 	entities = dxfutil.GetIndex(start, iniMap["TOLERANCE"], entities)
+	fmt.Println("sorted")
+	for _, e := range entities {
+		fmt.Printf("%d %s Xs%.3f Ys%.3f Xe%.3f Ye%.3f\n",e.Index, e.G0, e.Xs, e.Ys, e.Xe, e.Ye)
+	}
 	dxfutil.GenGcode(entities, iniMap["SAVEAS"])
 }
