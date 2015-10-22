@@ -1,2 +1,2 @@
-# DUCK BUTT
-THIS CODE DOES NOT WORK SO DON'T BOTHER DOWNLOADING IT!
+# dxf2gcode
+Don't confuse this with other dxf2gcode programs.
