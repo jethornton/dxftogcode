@@ -1,2 +1,2 @@
 # DUCK BUTT
-Go Away and don't even look at my code!
+THIS CODE DOES NOT WORK SO DON'T BOTHER DOWNLOADING IT!
