@@ -1,5 +1,5 @@
 package main
-
+// DXF to G code converter
 import (
 	"os"
 	"os/user"
