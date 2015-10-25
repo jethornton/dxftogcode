@@ -52,7 +52,7 @@ class Buglump:
 			self.statusbar.push(self.context_id, 'No File Open')
 
 	def on_view_test(self, item, data=None):
-		print self.current_folder
+		print subprocess.call('dxf2gcode', shell=True)
 
 	def on_help_about(self, menuitem, data=None):
 		self.response = self.aboutdialog.run()
