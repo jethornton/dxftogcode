@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	usr, _ := user.Current()
+	usr, _ := user.Current() // get user information
+	cwd, _ := os.Getwd() // get current working directory
 	iniMap := make(map[string]string)
 	var inFile string
 	if len(os.Args) == 2 {
@@ -21,14 +22,13 @@ func main() {
 			inFile = os.Args[1]
 		}
 	} else {
-		pwd, _ := os.Getwd()
-		fmt.Println("Current Working Directory is:", pwd)
+		fmt.Println("Current Working Directory is:", cwd)
 		fmt.Println("Current User Directory is:", usr.HomeDir)
 		fmt.Println("Usage is: dxf2gcode filename.ext")
 		fmt.Println("Usage is: dxf2gcode -v")
 		os.Exit(0)
 	}
-	dxfutil.Readini(iniMap, usr.HomeDir)
+	dxfutil.Readini(iniMap, cwd)
 	lines := dxfutil.GetLines(inFile)
 	entities := dxfutil.GetEntities(lines)
 	entities = dxfutil.GetEndPoints(entities)
