@@ -1,0 +1,56 @@
+Create a directory like dxf2gcode
+
+Download https://github.com/jethornton/dxf2gcode/archive/master.zip
+
+Download https://github.com/jethornton/dxfutil/archive/master.zip
+
+Copy the following files from dxf2gcode-master to dxf2gcode
+dxf.glade
+dxf.py
+dxf2gcode.go
+dxf2gcode.ini
+
+Create a directory dxf2gcode/src/dxfutil and copy the following file there.
+dxf_util.go
+file_util.go
+gcode.go
+
+Download go to someplace like Downloads
+Linux-32 bit https://storage.googleapis.com/golang/go1.5.1.linux-386.tar.gz
+Linux-64 bit https://storage.googleapis.com/golang/go1.5.1.darwin-amd64.pkg
+
+Open a terminal and cd to the Downloads directory and extract it into /usr/local,
+creating a Go tree in /usr/local/go.
+cd Downloads
+32 bit
+sudo tar -C /usr/local -xzf go1.5.1.linux-386.tar.gz
+
+In Debian Wheezy i had to add the following to the .bashrc file located in
+the home directory.
+export GOROOT=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+
+In Ubuntu 10.04 I had to put the following in .profile file located in the
+home directory. After saving I had to reboot the computer.
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/dxf2gcode
+
+Now open a terminal and change to the dxf2gcode directory and build the
+executable.
+cd dxf2gcode
+go build dxf2gcode.go
+
+Now test that the build is ok by typing
+./dxf2gcode
+and you should see some info about the program.
+
+In Ubuntu 10.04 I had to change the third line in dxf2gcode.glade to 
+<requires lib="gtk+" version="2.20"/>
+
+Next change the following lines in dxf.py to work with a local not installed
+version. Note you just need to add the ./ in front of dxf2gcode
+subprocess.call('./dxf2gcode %s' %self.args, shell=True)
+Next make sure dxf.py is executable and run that with
+./dxf.py
+
+There still seems to be issues with Ubuntu 10.04...
