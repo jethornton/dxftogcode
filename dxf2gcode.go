@@ -39,12 +39,12 @@ func main() {
 	}
 
 	entities = dxfutil.GetIndex(entities)
-
+/*
 	for _, e := range entities {
 		fmt.Printf("%2d %2s %4s Xs %f Ys %f Xe %f Ye %f\n",
 		e.Index, e.G, e.G0, e.Xs, e.Ys, e.Xe, e.Ye)
 	}
-
+*/
 	dxfutil.GenGcode(entities, iniMap["SAVEAS"])
 
 }
