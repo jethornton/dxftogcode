@@ -33,20 +33,20 @@ func main() {
 	entities := dxfutil.GetEntities(lines)
 	for _, e := range entities {
 		fmt.Printf("%2d %4s G10 %8s G11 %8s G20 %8s G21 %8s G50 %9s G51 %9s\n",
-		e.N, e.G0, e.G10, e.G11, e.G20, e.G21, e.G50, e.G51)
+		e.Test, e.G0, e.G10, e.G11, e.G20, e.G21, e.G50, e.G51)
 	}
 	entities = dxfutil.GetEndPoints(entities)
 
 	for _, e := range entities {
 		fmt.Printf("%2d %4s Xs %9f Xe %9f Ys %9f Ye %9f\n",
-		e.N, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
+		e.Test, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
 	}
 
-	entities = dxfutil.GetIndex(entities)
+	entities = dxfutil.GetOrder(entities)
 
 	for _, e := range entities {
 		fmt.Printf("%2d %2d %4s Xs %9f Xe %9f Ys %9f Ye %9f\n",
-		e.N, e.Index, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
+		e.Test, e.Index, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
 	}
 
 	dxfutil.GenGcode(entities, iniMap["SAVEAS"])

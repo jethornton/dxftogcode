@@ -12,7 +12,7 @@ import (
 )
 
 type Ent struct {
-	N, Index int
+	Test, Index int
 	G0, G, G8, G10, G11, G20, G21, G30, G31, G40, G50, G51 string
 	Xs, Xe, Ys, Ye, Zs, Ze float64
 }
@@ -106,7 +106,7 @@ func GetEntities(list []string) ([]Ent){
 			case "  0":
 				if len(e) > 0 {count++}
 				e = append(e, Ent{})
-				e[count].N = count
+				e[count].Test = count
 				e[count].G0 = list[i]
 			case "  8":
 				e[count].G8 = list[i]
@@ -169,7 +169,50 @@ func GetEndPoints (e []Ent) ([]Ent){
 	return e
 }
 
-func GetIndex(e []Ent) ([]Ent) {
+func GetOrder(e []Ent) ([]Ent) {
+	// search for a match for e[0] then search for a match to what matched e[0]
+	// this way I can say where to start... sounds good to me now to make it work
+	c := 0
+	x := 0
+	Search:
+	for range e {
+		x++
+		for i := range e {
+			if c != i && floatCompare(e[c].Xe, e[i].Xs) && floatCompare(e[c].Ye, e[i].Ys) {
+				fmt.Printf("ccw c%2d matched i%2d\n", c, i)
+				e[i].Index = x
+				c = i
+				switch e[i].G0 {
+				case "ARC":
+					e[i].G = "3"
+				case "LINE":
+					e[i].G = "1"
+				}
+				continue Search
+			}
+		}
+		for i := range e {
+			if c != i && floatCompare(e[c].Xe, e[i].Xe) && floatCompare(e[c].Ye, e[i].Ye) {
+				// swap start/end, e[i].Index = x, c = i
+				fmt.Printf("cw c%2d matched i%2d\n", c, i)
+				// swap end points and angles
+				e[i].Xe, e[i].Xs = e[i].Xs, e[i].Xe
+				e[i].Ye, e[i].Ys = e[i].Ys, e[i].Ye
+				e[i].G50, e[i].G51 = e[i].G51, e[i].G50
+				e[i].Index = x
+				c = i
+				switch e[i].G0 {
+				case "ARC":
+					e[i].G = "2"
+				case "LINE":
+					e[i].G = "1"
+				}
+				continue Search
+			}
+		}
+	}
+	fmt.Println("GetOrder Done")
+ /*
 	test := e
 	m := 0
 	Searching:
@@ -215,7 +258,8 @@ func GetIndex(e []Ent) ([]Ent) {
 		}
 		fmt.Println("no match for",key)
 	}
+	*/
 	sort.Sort(ByIndex(e))
-	fmt.Println("GetIndex Done")
+
 	return e
 }
