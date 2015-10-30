@@ -3,7 +3,7 @@ package main
 // DXF to G code converter
 import (
 	"fmt"
-	"github.com/jethornton/dxfutil"
+	"github.com/jethornton/dxf2gcode/dxfutil"
 	"os"
 	"os/user"
 )
@@ -31,20 +31,24 @@ func main() {
 	dxfutil.Readini(iniMap, cwd)
 	lines := dxfutil.GetLines(inFile)
 	entities := dxfutil.GetEntities(lines)
+	for _, e := range entities {
+		fmt.Printf("%2d %4s G10 %8s G11 %8s G20 %8s G21 %8s G50 %9s G51 %9s\n",
+		e.N, e.G0, e.G10, e.G11, e.G20, e.G21, e.G50, e.G51)
+	}
 	entities = dxfutil.GetEndPoints(entities)
 
 	for _, e := range entities {
-		fmt.Printf("%2d %2s %4s Xs %f Ys %f Xe %f Ye %f\n",
-		e.Index, e.G, e.G0, e.Xs, e.Ys, e.Xe, e.Ye)
+		fmt.Printf("%2d %4s Xs %9f Xe %9f Ys %9f Ye %9f\n",
+		e.N, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
 	}
 
 	entities = dxfutil.GetIndex(entities)
-/*
+
 	for _, e := range entities {
-		fmt.Printf("%2d %2s %4s Xs %f Ys %f Xe %f Ye %f\n",
-		e.Index, e.G, e.G0, e.Xs, e.Ys, e.Xe, e.Ye)
+		fmt.Printf("%2d %2d %4s Xs %9f Xe %9f Ys %9f Ye %9f\n",
+		e.N, e.Index, e.G0, e.Xs, e.Xe, e.Ys, e.Ye)
 	}
-*/
+
 	dxfutil.GenGcode(entities, iniMap["SAVEAS"])
 
 }

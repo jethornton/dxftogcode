@@ -1,2 +1,16 @@
+LINE      10, 20, 30 (start point), 11, 21, 31 (end point).
+
+POINT     10, 20, 30 (point), 50 (angle of X axis for the UCS in effect
+          when the Point was drawn -optional 0, for use when PDMODE is
+          nonzero).
+
+CIRCLE    10, 20, 30 (center), 40 (radius).
+
+ARC       10, 20, 30 (center), 40 (radius), 50 (start angle), 51 (end
+          angle)
+
+0 start of an entitiy
+8 layer name
+
 $ANGBASE is set to 0.0, meaning 0 degrees is to the east or right.
 $ANGDIR is set to 0, meaning drawing is counter-clockwise.
