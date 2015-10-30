@@ -2,18 +2,7 @@ Create a directory like dxf2gcode
 
 Download https://github.com/jethornton/dxf2gcode/archive/master.zip
 
-Download https://github.com/jethornton/dxfutil/archive/master.zip
-
-Copy the following files from dxf2gcode-master to dxf2gcode
-dxf.glade
-dxf.py
-dxf2gcode.go
-dxf2gcode.ini
-
-Create a directory dxf2gcode/src/dxfutil and copy the following file there.
-dxf_util.go
-file_util.go
-gcode.go
+Copy the files and sub-directories from dxf2gcode-master to dxf2gcode
 
 Download go to someplace like Downloads
 Linux-32 bit https://storage.googleapis.com/golang/go1.5.1.linux-386.tar.gz
