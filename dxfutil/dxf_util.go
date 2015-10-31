@@ -170,28 +170,30 @@ func GetEndPoints (e []Ent) ([]Ent){
 }
 
 func GetOrder(e []Ent) ([]Ent) {
-	// search for a match for e[0] then search for a match to what matched e[0]
-	// this way I can say where to start... sounds good to me now to make it work
-	c := 0
-	x := 0
-	//fmt.Println("len(e)", len(e))
+	c := 3 // entity to search from
+	dir := "CW" // direction of travel
 	Search:
 	for i := range e {
-		x++
-		//fmt.Println("x i",x, i)
 		if i == len(e) - 1 { break } // don't process the last one
+		// if direction is CW and it is an arc reverse the arc before processing
 		if i == 0 { // this will need to be smarter to figure out if it is G2 or G3
-			switch e[i].G0 {
+			fmt.Printf("e[c].G0 %s e[c].G50 %s e[c].G51 %s\n", e[c].G0, e[c].G50, e[c].G51)
+			switch e[c].G0 {
 			case "ARC":
-				e[i].G = "3"
+				if dir == "CW" {
+					e[c].G = "2"
+					e[c].Xe, e[c].Xs = e[c].Xs, e[c].Xe
+					e[c].Ye, e[c].Ys = e[c].Ys, e[c].Ye
+					e[c].G50, e[c].G51 = e[c].G51, e[c].G50
+				} else {
+					e[c].G = "3"
+				}
 			case "LINE":
-				e[i].G = "1"
+				e[c].G = "1"
 			}
 		}
 		for j := range e {
 			if c != j && floatCompare(e[c].Xe, e[j].Xs) && floatCompare(e[c].Ye, e[j].Ys) {
-				//fmt.Println("ccw x i j",x, i, j)
-				//fmt.Printf("ccw c%2d matched i%2d\n", c, i)
 				e[j].Index = i + 1
 				c = j
 				switch e[j].G0 {
@@ -205,8 +207,6 @@ func GetOrder(e []Ent) ([]Ent) {
 		}
 		for k := range e {
 			if c != k && floatCompare(e[c].Xe, e[k].Xe) && floatCompare(e[c].Ye, e[k].Ye) {
-				//fmt.Println("cw x i k",x, i, k)
-				//fmt.Printf("cw c%2d matched i%2d\n", c, i)
 				// swap end points
 				e[k].Xe, e[k].Xs = e[k].Xs, e[k].Xe
 				e[k].Ye, e[k].Ys = e[k].Ys, e[k].Ye
@@ -226,7 +226,7 @@ func GetOrder(e []Ent) ([]Ent) {
 			}
 		}
 	}
-	fmt.Println("GetOrder Done")
 	sort.Sort(ByIndex(e))
+	fmt.Println("GetOrder Done")
 	return e
 }
