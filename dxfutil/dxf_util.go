@@ -174,92 +174,59 @@ func GetOrder(e []Ent) ([]Ent) {
 	// this way I can say where to start... sounds good to me now to make it work
 	c := 0
 	x := 0
+	//fmt.Println("len(e)", len(e))
 	Search:
-	for range e {
+	for i := range e {
 		x++
-		for i := range e {
-			if c != i && floatCompare(e[c].Xe, e[i].Xs) && floatCompare(e[c].Ye, e[i].Ys) {
-				fmt.Printf("ccw c%2d matched i%2d\n", c, i)
-				e[i].Index = x
-				c = i
-				switch e[i].G0 {
+		//fmt.Println("x i",x, i)
+		if i == len(e) - 1 { break } // don't process the last one
+		if i == 0 { // this will need to be smarter to figure out if it is G2 or G3
+			switch e[i].G0 {
+			case "ARC":
+				e[i].G = "3"
+			case "LINE":
+				e[i].G = "1"
+			}
+		}
+		for j := range e {
+			if c != j && floatCompare(e[c].Xe, e[j].Xs) && floatCompare(e[c].Ye, e[j].Ys) {
+				//fmt.Println("ccw x i j",x, i, j)
+				//fmt.Printf("ccw c%2d matched i%2d\n", c, i)
+				e[j].Index = i + 1
+				c = j
+				switch e[j].G0 {
 				case "ARC":
-					e[i].G = "3"
+					e[j].G = "3"
 				case "LINE":
-					e[i].G = "1"
+					e[j].G = "1"
 				}
 				continue Search
 			}
 		}
-		for i := range e {
-			if c != i && floatCompare(e[c].Xe, e[i].Xe) && floatCompare(e[c].Ye, e[i].Ye) {
-				// swap start/end, e[i].Index = x, c = i
-				fmt.Printf("cw c%2d matched i%2d\n", c, i)
-				// swap end points and angles
-				e[i].Xe, e[i].Xs = e[i].Xs, e[i].Xe
-				e[i].Ye, e[i].Ys = e[i].Ys, e[i].Ye
-				e[i].G50, e[i].G51 = e[i].G51, e[i].G50
-				e[i].Index = x
-				c = i
-				switch e[i].G0 {
+		for k := range e {
+			if c != k && floatCompare(e[c].Xe, e[k].Xe) && floatCompare(e[c].Ye, e[k].Ye) {
+				//fmt.Println("cw x i k",x, i, k)
+				//fmt.Printf("cw c%2d matched i%2d\n", c, i)
+				// swap end points
+				e[k].Xe, e[k].Xs = e[k].Xs, e[k].Xe
+				e[k].Ye, e[k].Ys = e[k].Ys, e[k].Ye
+				
+				e[k].Index = i + 1
+				c = k
+				switch e[k].G0 {
 				case "ARC":
-					e[i].G = "2"
+					e[k].G = "2"
+					e[k].G50, e[k].G51 = e[k].G51, e[k].G50
 				case "LINE":
-					e[i].G = "1"
+					e[k].G = "1"
+					e[k].G10, e[k].G11 = e[k].G11, e[k].G10
+					e[k].G20, e[k].G21 = e[k].G21, e[k].G20
 				}
 				continue Search
 			}
 		}
 	}
 	fmt.Println("GetOrder Done")
- /*
-	test := e
-	m := 0
-	Searching:
-	for key := range e {
-		for i := range test {
-			if m != i {
-				 // CCW match
-				if floatCompare(e[m].Xe, e[i].Xs) && floatCompare(e[m].Ye, e[i].Ys) {
-					e[i].Index = key
-					m = i
-					//fmt.Printf("CCW Match Xe%f Xs%f Ye%f Ys%f\n"
-					//,e[m].Xe, e[i].Xs, e[m].Ye, e[i].Ys)
-					switch e[m].G0 {
-					case "ARC":
-						e[m].G = "3"
-					case "LINE":
-						e[m].G = "1"
-					}
-					continue Searching
-				}
-			}
-		}
-		for i := range test {
-			if m != i {
-				 // CW match
-				if floatCompare(e[m].Xe, e[i].Xe) && floatCompare(e[m].Ye, e[i].Ye) {
-					e[i].Index = key
-					m = i
-					switch e[m].G0 {
-					case "ARC":
-						e[m].G = "2"
-					case "LINE":
-						e[m].G = "1"
-					}
-					// swap end points and angles
-					e[m].Xe, e[m].Xs = e[m].Xs, e[m].Xe
-					e[m].Ye, e[m].Ys = e[m].Ys, e[m].Ye
-					e[m].G50, e[m].G51 = e[m].G51, e[m].G50
-					//fmt.Printf("CW Match Xe%f Xs%f Ye%f Ys%f\n",e[m].Xe, e[i].Xs, e[m].Ye, e[i].Ys)
-					continue Searching
-				}
-			}
-		}
-		fmt.Println("no match for",key)
-	}
-	*/
 	sort.Sort(ByIndex(e))
-
 	return e
 }
