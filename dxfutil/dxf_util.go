@@ -177,7 +177,6 @@ func GetOrder(e []Ent) ([]Ent) {
 		if i == len(e) - 1 { break } // don't process the last one
 		// if direction is CW and it is an arc reverse the arc before processing
 		if i == 0 { // this will need to be smarter to figure out if it is G2 or G3
-			fmt.Printf("e[c].G0 %s e[c].G50 %s e[c].G51 %s\n", e[c].G0, e[c].G50, e[c].G51)
 			switch e[c].G0 {
 			case "ARC":
 				if dir == "CW" {
