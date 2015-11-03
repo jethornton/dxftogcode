@@ -7,6 +7,7 @@ version = '1.0.0'
 import gtk
 import os
 import subprocess
+import ConfigParser
 
 class Buglump:
 
@@ -18,11 +19,15 @@ class Buglump:
 		self.aboutdialog = self.builder.get_object("aboutdialog")
 		self.aboutdialog.set_version(version)
 		self.tolerance = self.builder.get_object('tolerance_entry')
+		self.path = self.builder.get_object('path_entry')
 		self.status = self.builder.get_object("status_label")
 		self.status.set_text('No File Open')
 		self.current_folder = os.path.expanduser('~')
 		self.label2 = self.builder.get_object('label2')
 		self.file_name = ''
+		self.ini_file = ''
+		self.config = ConfigParser.ConfigParser()
+		self.config.optionxform = str
 		self.window.show()
 		self.ini_check()
 
@@ -59,34 +64,81 @@ class Buglump:
 			self.status.set_text('No File Open')
 
 	def on_view_test(self, item, data=None):
-		pass
+		message = 'Do you like my test?\nPick one.'
+		result = self.yesno_dialog(message)
+		if result == gtk.RESPONSE_YES:
+			print 'view yes'
+		if result == gtk.RESPONSE_NO:
+			print 'view no'
+		if result == gtk.RESPONSE_DELETE_EVENT:
+			print 'view delete'
 
 	def ini_check(self, data=None):
 		ini_path = os.path.expanduser('~') + '/.config/dxf2emc'
-		ini_file = ini_path + '/dxf2emc.ini'
+		self.ini_file = ini_path + '/dxf2emc.ini'
 		if not os.path.exists(ini_path):
 			os.makedirs(ini_path, 0755)
-		if not os.path.exists(ini_file):
-			fo = open(ini_file,'w')
-			fo.write('TOLERANCE=0.000001')
-			fo.close
-			message = 'Preferences File Created\nthis can be edited from Edit > Preferences'
-			md = gtk.MessageDialog(self.window,
-			gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
-			gtk.BUTTONS_OK, message)
-			md.run()
-			md.destroy()
-		self.tolerance.set_text('0.0000001')
+		if not os.path.exists(self.ini_file):
+			self.build_ini()
+			message = 'Preferences File Created\nthis can be edited in the Preferences tab'
+			result = self.ok_dialog(message)
+			if result == gtk.RESPONSE_OK:
+				print 'ok'
+		if os.path.exists(self.ini_file):
+			try:
+				self.config.read(self.ini_file)
+				self.on_revert_prefrences()
+			except:
+				message = 'The preferences file is corrupt.\nRebuild with default settings?'
+				result = self.yesno_dialog(message)
+				if result == gtk.RESPONSE_YES:
+					self.build_ini()
+
+	def build_ini(self):
+		cfgfile = open(self.ini_file,'w')
+		self.config.add_section('Configuration')
+		self.config.set('Configuration', 'TOLERANCE', '0.000001')
+		self.config.set('Configuration', 'PATH', 'CCW')
+		self.config.write(cfgfile)
+		cfgfile.close
 
 	def on_help_about(self, menuitem, data=None):
 		self.response = self.aboutdialog.run()
 		self.aboutdialog.hide()
 
 	def on_revert_prefrences(self, data=None):
-		self.status.set_text('Prefrences Reverted not operational.')
+		try:
+			self.tolerance.set_text(self.config.get('Configuration', 'TOLERANCE'))
+			self.path.set_text(self.config.get('Configuration', 'PATH'))
+		except:
+			message = 'The preferences file is corrupt.\nRebuild with default settings?'
+			result = yesno_dialog(message)
+			if result == gtk.RESPONSE_YES:
+				self.build_ini()
 
 	def on_save_preferences(self, data=None):
-		self.status.set_text('Prefrences Saved not operational.')
+		cfgfile = open(self.ini_file, 'w')
+		self.config.set('Configuration', 'TOLERANCE', self.tolerance.get_text())
+		self.config.set('Configuration', 'PATH', self.path.get_text())
+		self.config.write(cfgfile)
+		cfgfile.close()
+
+	def yesno_dialog(self, message):
+		md = gtk.MessageDialog(self.window,
+		gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
+		gtk.BUTTONS_YES_NO, message)
+		result = md.run()
+		md.destroy()
+		return result
+
+	def ok_dialog(self, message):
+		md = gtk.MessageDialog(self.window,
+		gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
+		gtk.BUTTONS_OK, message)
+		result = md.run()
+		md.destroy()
+		return result
+
 
 if __name__ == '__main__':
   main = Buglump()
