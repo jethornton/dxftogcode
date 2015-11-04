@@ -903,7 +903,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-2
+1
   0
 LAYER
   5
@@ -914,28 +914,6 @@ AcDbSymbolTableRecord
 AcDbLayerTableRecord
   2
 0
- 70
-0
- 62
-7
-  6
-CONTINUOUS
-290
-1
-370
-0
-390
-F
-  0
-LAYER
-  5
-43
-100
-AcDbSymbolTableRecord
-100
-AcDbLayerTableRecord
-  2
-Inside
  70
 0
  62
@@ -1275,7 +1253,7 @@ ENTITIES
   0
 ARC
   5
-44
+43
 100
 AcDbEntity
   8
@@ -1305,7 +1283,7 @@ AcDbArc
   0
 LINE
   5
-45
+44
 100
 AcDbEntity
 100
@@ -1333,7 +1311,7 @@ ByLayer
   0
 ARC
   5
-46
+45
 100
 AcDbEntity
   8
@@ -1363,7 +1341,7 @@ AcDbArc
   0
 LINE
   5
-47
+46
 100
 AcDbEntity
 100
@@ -1391,7 +1369,7 @@ ByLayer
   0
 ARC
   5
-48
+47
 100
 AcDbEntity
   8
@@ -1417,6 +1395,34 @@ AcDbArc
  50
 270.0
  51
+0.0
+  0
+LINE
+  5
+48
+100
+AcDbEntity
+100
+AcDbLine
+  8
+0
+ 62
+256
+370
+-1
+  6
+ByLayer
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+ 11
+9.0
+ 21
+0.0
+ 31
 0.0
   0
 LINE
@@ -1435,34 +1441,6 @@ AcDbLine
   6
 ByLayer
  10
-1.0
- 20
-0.0
- 30
-0.0
- 11
-9.0
- 21
-0.0
- 31
-0.0
-  0
-LINE
-  5
-4A
-100
-AcDbEntity
-100
-AcDbLine
-  8
-0
- 62
-256
-370
--1
-  6
-ByLayer
- 10
 0.0
  20
 9.0
@@ -1477,7 +1455,7 @@ ByLayer
   0
 ARC
   5
-4B
+4A
 100
 AcDbEntity
   8
@@ -1504,118 +1482,6 @@ AcDbArc
 180.0
  51
 270.0
-  0
-LINE
-  5
-4C
-100
-AcDbEntity
-100
-AcDbLine
-  8
-Inside
- 62
-256
-370
--1
-  6
-ByLayer
- 10
-1.0
- 20
-1.0
- 30
-0.0
- 11
-9.0
- 21
-1.0
- 31
-0.0
-  0
-LINE
-  5
-4D
-100
-AcDbEntity
-100
-AcDbLine
-  8
-Inside
- 62
-256
-370
--1
-  6
-ByLayer
- 10
-9.0
- 20
-1.0
- 30
-0.0
- 11
-9.0
- 21
-9.0
- 31
-0.0
-  0
-LINE
-  5
-4E
-100
-AcDbEntity
-100
-AcDbLine
-  8
-Inside
- 62
-256
-370
--1
-  6
-ByLayer
- 10
-9.0
- 20
-9.0
- 30
-0.0
- 11
-1.0
- 21
-9.0
- 31
-0.0
-  0
-LINE
-  5
-4F
-100
-AcDbEntity
-100
-AcDbLine
-  8
-Inside
- 62
-256
-370
--1
-  6
-ByLayer
- 10
-1.0
- 20
-9.0
- 30
-0.0
- 11
-1.0
- 21
-1.0
- 31
-0.0
   0
 ENDSEC
   0
@@ -1655,7 +1521,7 @@ E
   3
 AcDbVariableDictionary
 350
-50
+4B
   0
 DICTIONARY
   5
@@ -2119,7 +1985,7 @@ Layout2
   0
 DICTIONARY
   5
-50
+4B
 100
 AcDbDictionary
 281
@@ -2127,15 +1993,15 @@ AcDbDictionary
   3
 DIMASSOC
 350
-52
+4D
   3
 HIDETEXT
 350
-51
+4C
   0
 DICTIONARYVAR
   5
-51
+4C
 100
 DictionaryVariables
 280
@@ -2145,7 +2011,7 @@ DictionaryVariables
   0
 DICTIONARYVAR
   5
-52
+4D
 100
 DictionaryVariables
 280

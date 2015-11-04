@@ -12,33 +12,55 @@ import (
 )
 
 var ( // flag variables
-	file *string
+	input *string
 	direction *string
+	output *string
+	analyze *bool
+	convert *bool
 	//port *int
-	//yesno *bool
 )
 
 // Basic flag declarations are available for string, integer, and boolean options.
 func init() { // flag.Type(flag, default, help string)
-	file = flag.String("f", "test.dxf", "Path to a DXF to convert")
+	input = flag.String("i", "dxf/test.dxf", "Input file path")
+	output = flag.String("o", "output.ngc", "Output file path")
 	direction = flag.String("d", "CCW", "Direction of path")
+	analyze = flag.Bool("a", false, "Analyze contents of the file")
+	convert = flag.Bool("c", false, "Convert contents of the file")
 	//port = flag.Int("port", 3000, "an int")
-	//yesno = flag.Bool("yesno", true, "a bool")
 }
 
 func main() {
 	flag.Parse()
-	usr, _ := user.Current() // get user information
-	inipath := usr.HomeDir + "/.config/dxf2emc"
-	fmt.Println(inipath)
-	//fmt.Println(dxfutil.PathExists(inipath + "/dxf2emc.ini"))
+	if flag.NFlag() == 0 { // if no flags are passed print usage
+		flag.Usage()
+		fmt.Println("Analyze", *analyze)
+		fmt.Println("Flags", flag.NFlag())
+		os.Exit(1)
+	}
+	if *convert {
+		fmt.Println("Convert was true")
+	}
+	iniMap := make(map[string]string)
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
 	}
+	dxfutil.Readini(iniMap, dir)
+	lines := dxfutil.GetLines(*input)
+	entities := dxfutil.GetEntities(lines)
+	if *analyze {
+		dxfutil.GetLayers(entities)
+	}
+
+	os.Exit(1)
+	usr, _ := user.Current() // get user information
+	inipath := usr.HomeDir + "/.config/dxf2emc"
+	fmt.Println(inipath)
+	//fmt.Println(dxfutil.PathExists(inipath + "/dxf2emc.ini"))
 	//fmt.Println(dir)
 	//cwd, _ := os.Getwd() // get current working directory
-	iniMap := make(map[string]string)
+
 	//var inFile string
 	/*
 	if len(os.Args) == 2 {
@@ -58,9 +80,7 @@ func main() {
 		fmt.Println("Usage is: dxf2gcode -v")
 		os.Exit(0)
 	}*/
-	dxfutil.Readini(iniMap, dir)
-	lines := dxfutil.GetLines(*file)
-	entities := dxfutil.GetEntities(lines)
+
 	entities = dxfutil.GetEndPoints(entities)
 	entities = dxfutil.GetOrder(entities)
 	dxfutil.GenGcode(entities, iniMap["SAVEAS"])

@@ -1,6 +1,5 @@
 package dxfutil
 
-
 import (
 	"bufio"
 	"os"
@@ -139,6 +138,22 @@ func GetEntities(list []string) ([]Ent){
 	}
 	fmt.Println("GetEntities Done")
 	return e
+}
+
+func GetLayers(e []Ent){
+	var layers []string
+	Search:
+	for i := range e {
+		if len(layers) == 0 {
+			layers = append(layers, e[i].G8)
+			continue Search
+		}
+		for j := range layers {
+			if e[i].G8 == layers[j]{ continue Search }
+		}
+		layers = append(layers, e[i].G8)
+	}
+	fmt.Println(layers)
 }
 
 func GetEndPoints (e []Ent) ([]Ent){
