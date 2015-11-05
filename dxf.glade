@@ -237,21 +237,49 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkLabel" id="label4">
+              <object class="GtkTable" id="table2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Functioning menu items are:
-File &gt; Open: selects a .dxf file for processing
-File &gt; Convert: runs the .dxf file through dxf2gcode
-File &gt; Quit
-Help &gt; About</property>
+                <property name="n_rows">3</property>
+                <property name="n_columns">3</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="layers_cbo">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <signal name="changed" handler="on_layers_cbo_changed" swapped="no"/>
+                  </object>
+                </child>
               </object>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Usage</property>
+                <property name="label" translatable="yes">Setup</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -463,10 +491,14 @@ Help &gt; About</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label8">
+              <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
+                <property name="label" translatable="yes">Functioning menu items are:
+File &gt; Open: selects a .dxf file for processing
+File &gt; Convert: runs the .dxf file through dxf2gcode
+File &gt; Quit
+Help &gt; About</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -476,7 +508,7 @@ Help &gt; About</property>
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">page 3</property>
+                <property name="label" translatable="yes">Usage</property>
               </object>
               <packing>
                 <property name="position">2</property>

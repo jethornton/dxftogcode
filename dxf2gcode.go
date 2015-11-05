@@ -3,8 +3,8 @@ package main
 // DXF to G code converter
 import (
 	"flag"
-	"path/filepath"
-	"log"
+	//"path/filepath"
+	//"log"
 	"fmt"
 	"os"
 	"os/user"
@@ -34,33 +34,35 @@ func main() {
 	flag.Parse()
 	if flag.NFlag() == 0 { // if no flags are passed print usage
 		flag.Usage()
-		fmt.Println("Analyze", *analyze)
 		fmt.Println("Flags", flag.NFlag())
 		os.Exit(1)
 	}
-	if *convert {
-		fmt.Println("Convert was true")
-	}
 	iniMap := make(map[string]string)
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		log.Fatal(err)
-	}
-	dxfutil.Readini(iniMap, dir)
+	usr, _ := user.Current() // get user information
+	iniFile := usr.HomeDir + "/.config/dxf2emc/dxf2emc.ini"
+	dxfutil.Readini(iniMap, iniFile)
+	//fmt.Println("OUTPUT", iniMap["OUTPUT"])
+	//i, ok := iniMap["OUTPUT"]
+	//fmt.Println(i, ok)
 	lines := dxfutil.GetLines(*input)
 	entities := dxfutil.GetEntities(lines)
 	if *analyze {
 		dxfutil.GetLayers(entities)
 	}
+	if *convert {
+		fmt.Println("Convert was true")
+	}
 
 	os.Exit(1)
-	usr, _ := user.Current() // get user information
-	inipath := usr.HomeDir + "/.config/dxf2emc"
-	fmt.Println(inipath)
-	//fmt.Println(dxfutil.PathExists(inipath + "/dxf2emc.ini"))
-	//fmt.Println(dir)
-	//cwd, _ := os.Getwd() // get current working directory
 
+/*
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+*/
+
+	//cwd, _ := os.Getwd() // get current working directory
 	//var inFile string
 	/*
 	if len(os.Args) == 2 {

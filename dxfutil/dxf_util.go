@@ -153,7 +153,7 @@ func GetLayers(e []Ent){
 		}
 		layers = append(layers, e[i].G8)
 	}
-	fmt.Println(layers)
+	fmt.Println("Layers", layers)
 }
 
 func GetEndPoints (e []Ent) ([]Ent){

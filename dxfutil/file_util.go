@@ -1,6 +1,5 @@
 package dxfutil
 
-
 import (
 	"os"
 	"bufio"
@@ -16,7 +15,6 @@ func PathExists(path string) (bool) {
 }
 
 func Readini(m map[string]string, path string) {
-	path += "/dxf2gcode.ini"
 	f, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -26,9 +24,9 @@ func Readini(m map[string]string, path string) {
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		line := scanner.Text()
-		parts := strings.Split(line, "=")
-		for range parts {
-			m[parts[0]] = parts[1]
+		if line != "[Configuration]" && len(line) > 0 {
+			parts := strings.Split(line, "=")
+			m[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
 		}
 	}
 }
