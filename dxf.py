@@ -99,6 +99,7 @@ class Buglump:
 		command = "dxf2gcode -a"
 		process = Popen(command, stdout=PIPE, stderr=PIPE, shell=True)
 		output, error = process.communicate()
+		print output
 
 	def on_file_convert(self, input_file, data=None):
 		if len(self.input_file) > 0:
@@ -128,6 +129,8 @@ class Buglump:
 		self.aboutdialog.hide()
 
 # Setup Tab
+	def on_layers_cbo_changed(self, data=None):
+		pass
 
 # Preferences Tab
 	def on_revert_prefrences(self, data=None):
