@@ -34,6 +34,14 @@ class Buglump:
 		self.config = ConfigParser.ConfigParser()
 		self.config.optionxform = str
 		self.user_home = os.path.expanduser('~')
+		# Setup Tab
+		self.layers_cbo = self.builder.get_object('layers_cbo')
+		self.layers_liststore = gtk.ListStore(int,str)
+		self.layers_cbo.set_model(self.layers_liststore)
+		self.layers_cell = gtk.CellRendererText()
+		self.layers_cbo.pack_start(self.layers_cell, True)
+		self.layers_cbo.add_attribute(self.layers_cell, 'text', 1)
+		self.layer = ''
 		self.window.show()
 		self.ini_check()
 
@@ -85,25 +93,31 @@ class Buglump:
 		self.response = self.fcd.run()
 		if self.response == gtk.RESPONSE_OK:
 			self.status.set_text('File Selected %s' % self.fcd.get_filename())
-			self.input_file = "-f=" + self.fcd.get_filename()
+			self.input_file = self.fcd.get_filename()
 			self.current_folder = os.path.dirname(self.fcd.get_uri()[7:])
 			self.file_analyze.set_sensitive(True)
 			self.file_convert.set_sensitive(True)
-			self.on_file_analyze()
+			self.on_file_analyze("no")
 		else:
 			self.status.set_text('No File Open')
 		self.fcd.destroy()
 
 	def on_file_analyze(self, menuitem, data=None):
-		print 'Analyze %s' % self.input_file
+		#print 'Analyze %s' % self.input_file
 		command = "dxf2gcode -a"
 		process = Popen(command, stdout=PIPE, stderr=PIPE, shell=True)
 		output, error = process.communicate()
-		print output
+		self.layers_liststore.append([0,"Select a Layer:"])
+		x = 0
+		for i in output.splitlines():
+			++x
+			self.layers_liststore.append([x,i])
+		self.layers_cbo.set_active(0)
 
 	def on_file_convert(self, input_file, data=None):
 		if len(self.input_file) > 0:
-			self.args = self.input_file
+			self.args = "-f=" + self.input_file
+			self.args += "-l" + self.layer
 			self.result = Popen("dxf2gcode %s" %self.args, shell=True)
 			if self.result == 0:
 				self.status.set_text('Processing Complete')
@@ -129,8 +143,18 @@ class Buglump:
 		self.aboutdialog.hide()
 
 # Setup Tab
-	def on_layers_cbo_changed(self, data=None):
-		pass
+	def on_layers_cbo_changed(self, widget, data=None):
+		self.index = widget.get_active()
+		self.model = widget.get_model()
+		# retrieve the item from column 1
+		self.item = self.model[self.index][1]
+		# debuggin print statements
+		if self.index > 0:
+			print "ComboBox Active Text is", self.item
+			print "ComboBox Active Index is", self.index
+
+		# set the text of the label to match the selected item
+		# self.builder.get_object("label1").set_text(self.item)
 
 # Preferences Tab
 	def on_revert_prefrences(self, data=None):
