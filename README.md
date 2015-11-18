@@ -1,4 +1,4 @@
-# dxf2gcode
+# DXFtoGcode
 Don't confuse this with other dxf2gcode programs.
 
 Status: Not Functioning
