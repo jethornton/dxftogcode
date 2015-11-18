@@ -1,5 +1,5 @@
 # DXFtoGcode
-Don't confuse this with other dxf2gcode programs.
+Don't confuse this with dxf2gcode.
 
 Status: Not Functioning
 
